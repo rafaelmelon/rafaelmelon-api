@@ -6,9 +6,18 @@
   "author": "Rafael Melón <info@rafaelmelon.es>",
   "license": "MIT",
   "scripts": {
-    "start": "node index.js"
+    "start": "babel-node src/index.js --presets es2015",
+    "dev": "DEBUG=express:* node src/index.js"
   },
   "dependencies": {
-    "express": "^4.16.4"
+    "body-parser": "^1.18.3",
+    "dotenv": "^6.2.0",
+    "express": "^4.16.4",
+    "github-oauth": "^0.2.2",
+    "request": "^2.88.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1"
   }
 }
