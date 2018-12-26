@@ -1,37 +1,49 @@
 import express from 'express';
+
+import {
+  fetch,
+  fetchJSON,
+  githubOAuth
+} from '../config/index';
+
 let router = express.Router();
 
-router.get('/', (req, res, next) => {
-  let languages = [{
-      language: 'Spanish'
-    },
-    {
-      language: "French"
-    },
-    {
-      langauge: "German"
+router.use((req, res, next) => {
+  console.log('Time: ', Date.now());
+  next();
+});
+
+// app.get('*', (req,res) =>{
+//     res.sendFile(path.join(__dirname+'/client/build/index.html'));
+// });
+
+app.get('/*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'path/to/your/index.html'), (err) => {
+    if (err) {
+      res.status(500).send(err)
     }
-  ];
-  res.json(languages);
+  })
+})
+
+router.get("/login", (req, res) => {
+
+  return githubOAuth.login(req, res);
+});
+
+router.get("/callback", (req, res) => {
+  return githubOAuth.callback(req, res);
 });
 
 router.get('/users', (req, res, next) => {
-  let users = [{
-      language: 'Spanish'
+  const example = [{
+      user1: 'User 1'
     },
     {
-      language: "French"
+      user2: 'User 2'
     },
-    {
-      langauge: "German"
-    }
   ];
 
-  res.json(users);
+  res.json(example);
 });
-
-router.post('/user/create', (req, res) => {
-  res.json('rafaelmelon');
-})
 
 export default router;
