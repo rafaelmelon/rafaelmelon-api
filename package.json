@@ -6,14 +6,16 @@
   "author": "Rafael Melón <info@rafaelmelon.es>",
   "license": "MIT",
   "scripts": {
-    "start": "babel-node src/index.js --presets es2015",
-    "dev": "DEBUG=express:* node src/index.js"
+    "babel-node": "babel-node --presets es2015",
+    "start": "nodemon --exec npm run babel-node -- src/index.js",
+    "dev": "DEBUG=express:* nodemon src/index.js"
   },
   "dependencies": {
     "body-parser": "^1.18.3",
     "dotenv": "^6.2.0",
     "express": "^4.16.4",
     "github-oauth": "^0.2.2",
+    "nodemailer": "^5.0.0",
     "request": "^2.88.0"
   },
   "devDependencies": {

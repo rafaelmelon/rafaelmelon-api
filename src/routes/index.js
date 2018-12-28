@@ -3,7 +3,8 @@ import express from 'express';
 import {
   fetch,
   fetchJSON,
-  githubOAuth
+  githubOAuth,
+  transporter
 } from '../config/index';
 
 let router = express.Router();
@@ -16,14 +17,6 @@ router.use((req, res, next) => {
 // app.get('*', (req,res) =>{
 //     res.sendFile(path.join(__dirname+'/client/build/index.html'));
 // });
-
-app.get('/*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'path/to/your/index.html'), (err) => {
-    if (err) {
-      res.status(500).send(err)
-    }
-  })
-})
 
 router.get("/login", (req, res) => {
 
@@ -45,5 +38,26 @@ router.get('/users', (req, res, next) => {
 
   res.json(example);
 });
+
+router.post('/contact', (req, res, next) => {
+  const options = {
+    from: `${req.body.email}`,
+    to: 'info@rafaelmelon.es',
+    subject: `📢 Mensaje enviado por ${req.body.name}`,
+    text: `${req.body.notes}`,
+    replyTo: `${req.body.email}`
+  }
+
+  transporter.sendMail(options, (error, info) => {
+    if (error) {
+      console.log(error);
+      res.json('error');
+    } else {
+      console.log('Message sent: ' + info.response);
+      res.json(info.response);
+    };
+  });
+
+})
 
 export default router;

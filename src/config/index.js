@@ -1,12 +1,26 @@
 import dotenv from 'dotenv';
 import request from 'request';
+import nodemailer from 'nodemailer';
 dotenv.config()
 
 export const contants = {
   PORT: process.env.PORT,
   GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID,
   GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET,
+  HOST_EMAIL: process.env.HOST_EMAIL,
+  HOST_EMAIL_USER: process.env.HOST_EMAIL_USER,
+  HOST_EMAIL_PASS: process.env.HOST_EMAIL_PASS,
 }
+
+export const transporter = nodemailer.createTransport({
+  host: contants.HOST_EMAIL,
+  port: 465,
+  secure: true,
+  auth: {
+    user: contants.HOST_EMAIL_USER,
+    pass: contants.HOST_EMAIL_PASS
+  }
+});
 
 export const githubOAuth = require('github-oauth')({
   githubClient: contants.GITHUB_CLIENT_ID,
