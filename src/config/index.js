@@ -4,7 +4,7 @@ import nodemailer from 'nodemailer';
 dotenv.config()
 
 export const contants = {
-  PORT: process.env.PORT,
+  PORT: process.env.PORT || 3000,
   GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID,
   GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET,
   HOST_EMAIL: process.env.HOST_EMAIL,
