@@ -10,13 +10,15 @@ import {
 let router = express.Router();
 
 router.use((req, res, next) => {
+  const origin = req.get('origin'); 
+  res.header('Access-Control-Allow-Origin', origin);
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+
   console.log('Time: ', Date.now());
+
   next();
 });
-
-// app.get('*', (req,res) =>{
-//     res.sendFile(path.join(__dirname+'/client/build/index.html'));
-// });
 
 router.get("/login", (req, res) => {
 
