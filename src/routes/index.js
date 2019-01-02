@@ -1,9 +1,8 @@
 import express from 'express';
+import request from 'request';
 
 import {
-  fetch,
-  fetchJSON,
-  githubOAuth,
+  GitHubConfig,
   transporter
 } from '../config/index';
 
@@ -12,31 +11,39 @@ let router = express.Router();
 router.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-
   console.log('Time: ', Date.now());
 
   next();
 });
 
-router.get("/login", (req, res) => {
-
-  return githubOAuth.login(req, res);
+router.get('/user', (req, res, next) => {
+  const options = {
+    url: `${GitHubConfig.url}/users/rafaelmelon`,
+    headers: {
+      'User-Agent': 'request'
+    }
+  };
+  request(options, (error, response, body) => {
+    if (!error && response.statusCode == 200) {
+      const info = JSON.parse(body)
+      res.send(info)
+    }
+  });
 });
 
-router.get("/callback", (req, res) => {
-  return githubOAuth.callback(req, res);
-});
-
-router.get('/users', (req, res, next) => {
-  const example = [{
-      user1: 'User 1'
-    },
-    {
-      user2: 'User 2'
-    },
-  ];
-
-  res.json(example);
+router.get('/repos', (req, res, next) => {
+  const options = {
+    url: `${GitHubConfig.url}/users/rafaelmelon/repos`,
+    headers: {
+      'User-Agent': 'request'
+    }
+  };
+  request(options, (error, response, body) => {
+    if (!error && response.statusCode == 200) {
+      const info = JSON.parse(body)
+      res.send(info)
+    }
+  });
 });
 
 router.post('/contact', (req, res, next) => {
@@ -57,7 +64,6 @@ router.post('/contact', (req, res, next) => {
       res.json(info.response);
     };
   });
-
 })
 
 export default router;

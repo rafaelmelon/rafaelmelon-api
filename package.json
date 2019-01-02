@@ -11,7 +11,7 @@
     "clean": "rm -f -r -d dist",
     "start": "yarn run build && yarn run serve",
     "serve": "node dist/index.js",
-    "dev": "nodemon --exec babel-node src/index.js"
+    "dev": "nodemon --exec babel-node --inspect src/index.js"
   },
   "repository": {
     "type": "git",
