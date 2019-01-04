@@ -14,8 +14,7 @@ export const GitHubConfig = {
 
 export const transporter = nodemailer.createTransport({
   host: env.HOST_EMAIL,
-  port: 465,
-  secure: true,
+  port: 143,
   auth: {
     user: env.HOST_EMAIL_USER,
     pass: env.HOST_EMAIL_PASS

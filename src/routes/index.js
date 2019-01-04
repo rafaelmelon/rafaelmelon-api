@@ -25,10 +25,12 @@ router.get('/user', cacheMiddleware(100), (req, res, next) => {
       'User-Agent': 'request'
     }
   };
-  request(options, (error, response, body) => {
-    if (!error && response.statusCode == 200) {
+  request(options, (error, res, body) => {
+    if (!error && res.statusCode == 200) {
       const info = JSON.parse(body)
       res.send(info)
+    } else {
+      res.status(res.statusCode).json(null);
     }
   });
 });
@@ -40,10 +42,13 @@ router.get('/repos', cacheMiddleware(100), (req, res, next) => {
       'User-Agent': 'request'
     }
   };
-  request(options, (error, response, body) => {
-    if (!error && response.statusCode == 200) {
+
+  request(options, (error, res, body) => {
+    if (!error && res.statusCode == 200) {
       const info = JSON.parse(body)
       res.send(info)
+    } else {
+      res.status(res.statusCode).json(null);
     }
   });
 });
@@ -60,7 +65,7 @@ router.post('/contact', (req, res, next) => {
   transporter.sendMail(options, (error, info) => {
     if (error) {
       console.log(error);
-      res.json('error');
+      res.status(500).json('error');
     } else {
       console.log('Message sent: ' + info.response);
       res.json(info.response);
