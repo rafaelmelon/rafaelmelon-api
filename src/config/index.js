@@ -1,5 +1,5 @@
-import dotenv from 'dotenv';
-import nodemailer from 'nodemailer';
+const dotenv = require('dotenv');
+const nodemailer = require('nodemailer');
 dotenv.config()
 
 export const env = {

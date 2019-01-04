@@ -1,10 +1,12 @@
-import express from 'express';
-import request from 'request';
+const express = require('express');
+const request = require('request');
 
 import {
   GitHubConfig,
   transporter
 } from '../config/index';
+
+import { cacheMiddleware } from '../middleware/index';
 
 let router = express.Router();
 
@@ -16,7 +18,7 @@ router.use((req, res, next) => {
   next();
 });
 
-router.get('/user', (req, res, next) => {
+router.get('/user', cacheMiddleware(100), (req, res, next) => {
   const options = {
     url: `${GitHubConfig.url}/users/rafaelmelon`,
     headers: {
@@ -31,7 +33,7 @@ router.get('/user', (req, res, next) => {
   });
 });
 
-router.get('/repos', (req, res, next) => {
+router.get('/repos', cacheMiddleware(100), (req, res, next) => {
   const options = {
     url: `${GitHubConfig.url}/users/rafaelmelon/repos`,
     headers: {
