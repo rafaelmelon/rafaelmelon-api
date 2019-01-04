@@ -10,14 +10,6 @@ import { cacheMiddleware } from '../middleware/index';
 
 let router = express.Router();
 
-router.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  console.log('Time: ', Date.now());
-
-  next();
-});
-
 router.get('/user', cacheMiddleware(100), (req, res, next) => {
   const options = {
     url: `${GitHubConfig.url}/users/rafaelmelon`,
@@ -25,8 +17,8 @@ router.get('/user', cacheMiddleware(100), (req, res, next) => {
       'User-Agent': 'request'
     }
   };
-  request(options, (error, res, body) => {
-    if (!error && res.statusCode == 200) {
+  request(options, (error, response, body) => {
+    if (!error && response.statusCode == 200) {
       const info = JSON.parse(body)
       res.send(info)
     } else {
@@ -43,8 +35,8 @@ router.get('/repos', cacheMiddleware(100), (req, res, next) => {
     }
   };
 
-  request(options, (error, res, body) => {
-    if (!error && res.statusCode == 200) {
+  request(options, (error, response, body) => {
+    if (!error && response.statusCode == 200) {
       const info = JSON.parse(body)
       res.send(info)
     } else {
