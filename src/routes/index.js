@@ -2,11 +2,14 @@ const express = require('express');
 const request = require('request');
 
 import {
+  env,
   GitHubConfig,
   transporter
 } from '../config/index';
 
-import { cacheMiddleware } from '../middleware/index';
+import {
+  cacheMiddleware
+} from '../middleware/index';
 
 let router = express.Router();
 
@@ -45,13 +48,21 @@ router.get('/repos', cacheMiddleware(100), (req, res, next) => {
   });
 });
 
+transporter.verify(function (error, success) {
+  if (error) {
+    console.log(error);
+  } else {
+    console.log('Server is ready to take our messages');
+  }
+});
+
 router.post('/contact', (req, res, next) => {
   const options = {
-    from: `${req.body.email}`,
-    to: 'info@rafaelmelon.es',
+    from: req.body.email,
+    to: env.HOST_EMAIL_USER,
     subject: `📢 Mensaje enviado por ${req.body.name}`,
-    text: `${req.body.notes}`,
-    replyTo: `${req.body.email}`
+    text: req.body.notes,
+    replyTo: req.body.email
   }
 
   transporter.sendMail(options, (error, info) => {
