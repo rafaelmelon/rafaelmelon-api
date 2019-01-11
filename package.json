@@ -47,7 +47,6 @@
     "github-oauth": "^0.2.2",
     "memory-cache": "^0.2.0",
     "nodemailer": "^5.0.0",
-    "nodemailer-smtp-transport": "^2.7.4",
     "request": "^2.88.0"
   }
 }
