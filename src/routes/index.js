@@ -2,9 +2,8 @@ const express = require('express');
 const request = require('request');
 
 import {
-  env,
   GitHubConfig,
-  transporter
+  mailjet
 } from '../config/index';
 
 import {
@@ -50,22 +49,25 @@ router.get('/repos', cacheMiddleware(100), (req, res, next) => {
 
 router.post('/contact', (req, res, next) => {
   const options = {
-    from: req.body.email,
-    to: env.HOST_EMAIL_USER,
-    subject: `📢 Mensaje enviado por ${req.body.name}`,
-    text: req.body.notes,
-    replyTo: req.body.email
-  }
+    'FromEmail': req.body.email,
+    'FromName': req.body.name,
+    'Subject': `📢 Mensaje enviado por ${req.body.name}`,
+    'Text-part': req.body.notes,
+    'Recipients': [{
+      'Email': 'info@rafaelmelon.com'
+    }],
+  };
 
-  transporter.sendMail(options, (error, info) => {
-    if (error) {
-      console.log(error);
-      res.status(500).json('error');
-    } else {
-      console.log('Message sent: ' + info.response);
-      res.json(info.response);
-    };
-  });
+  mailjet.post('send')
+    .request(options)
+    .then(data => {
+      console.log('Message sent: ' + data);
+      res.json(data);
+    })
+    .catch(err => {
+      console.log(err);
+      throw new Error(err.ErrorMessage);
+    });
 })
 
 export default router;

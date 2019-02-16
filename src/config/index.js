@@ -1,10 +1,7 @@
-const dotenv = require('dotenv');
-const nodemailer = require('nodemailer');
-dotenv.config()
-
-export const env = {
-  ...process.env,
-}
+const Mailjet = require('node-mailjet');
+import {
+  env
+} from '../utils/index';
 
 export const GitHubConfig = {
   url: 'https://api.github.com',
@@ -12,20 +9,7 @@ export const GitHubConfig = {
   state: Math.round(Math.random() * 10)
 }
 
-export const transporter = nodemailer.createTransport({
-  host: env.HOST_EMAIL,
-  port: 143,
-  secure: false,
-  auth: {
-    user: env.HOST_EMAIL_USER,
-    pass: env.HOST_EMAIL_PASS
-  }
-});
-
-transporter.verify(function (error, success) {
-  if (error) {
-    console.log(error);
-  } else {
-    console.log('Server is ready to take our messages');
-  }
-});
+export const mailjet = Mailjet.connect(
+  env.MJ_APIKEY_PUBLIC,
+  env.MJ_APIKEY_PRIVATE
+);

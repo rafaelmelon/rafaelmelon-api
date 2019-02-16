@@ -5,7 +5,7 @@ const cors = require('cors');
 
 import {
   env,
-} from './config/index';
+} from './utils/index';
 import router from './routes/index';
 
 const app = express();
